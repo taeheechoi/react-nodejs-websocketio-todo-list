@@ -6,7 +6,7 @@ const PORT = 4444;
 
 const socketIO = require("socket.io")(http, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://192.168.1.29:3000"],
   },
 });
 
@@ -37,17 +37,6 @@ let tasks = {
           {
             name: "David",
             text: "Ensure you review before merging",
-            id: fetchID(),
-          },
-        ],
-      },
-      {
-        id: fetchID(),
-        title: "Review GitHub issues2",
-        comments: [
-          {
-            name: "David2",
-            text: "Ensure you review before merging2",
             id: fetchID(),
           },
         ],
@@ -96,8 +85,7 @@ socketIO.on("connection", (socket) => {
     console.log("Source >>>", tasks[source.droppableId].items);
     console.log("Destination >>>", tasks[destination.droppableId].items);
     socket.emit("tasks", tasks);
-    console.log("Source >>>", tasks[source.droppableId].items);
-    console.log("Destination >>>", tasks[destination.droppableId].items);
+    console.log("tasks emitted >>>", tasks);
   });
 
   socket.on("fetchComments", (data) => {

@@ -4,7 +4,7 @@ import TasksContainer from "./TasksContainer";
 import Nav from "./Nav";
 import socketIO from "socket.io-client";
 
-const socket = socketIO.connect("http://127.0.0.1:4444");
+const socket = socketIO.connect("http://192.168.1.29:4444");
 
 const Task = () => {
   return (

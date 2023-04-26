@@ -6,19 +6,20 @@ const TasksContainer = ({ socket }) => {
   const [tasks, setTasks] = useState({});
 
   useEffect(() => {
+    socket.on("tasks", (data) => {
+      console.log("Data fetched", data);
+      setTasks(data);
+    });
+  }, [socket]);
+
+  useEffect(() => {
     function fetchTasks() {
-      fetch("http://127.0.0.1:4444/api")
+      fetch("http://192.168.1.29:4444/api")
         .then((res) => res.json())
         .then((data) => setTasks(data));
     }
     fetchTasks();
   }, []);
-
-  useEffect(() => {
-    socket.on("tasks", (data) => {
-      setTasks(data);
-    });
-  }, [socket]);
 
   const handleDragEnd = ({ destination, source }) => {
     if (!destination) return;
@@ -27,7 +28,7 @@ const TasksContainer = ({ socket }) => {
       destination.droppableId === source.droppableId
     )
       return;
-    console.log({ source, destination });
+
     socket.emit("taskDragged", {
       source,
       destination,
@@ -43,7 +44,6 @@ const TasksContainer = ({ socket }) => {
           >
             <h3>{task[1].title} Tasks</h3>
             <div className={`${task[1].title.toLowerCase()}__container`}>
-              {/** --- 👇🏻 Droppable --- */}
               <Droppable droppableId={task[1].title}>
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps}>

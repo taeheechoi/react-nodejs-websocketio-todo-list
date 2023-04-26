@@ -5,10 +5,9 @@ const AddTask = ({ socket }) => {
 
   const handleAddTodo = (e) => {
     e.preventDefault();
-    console.log({ task });
+    socket.emit("createTask", { task });
     setTask("");
   };
-
   return (
     <form className="form__input" onSubmit={handleAddTodo}>
       <label htmlFor="task">Add Todo</label>
@@ -19,7 +18,7 @@ const AddTask = ({ socket }) => {
         value={task}
         className="input"
         required
-        onChange={(e) => setTask(e.taget.value)}
+        onChange={(e) => setTask(e.target.value)}
       />
       <button className="addTodoBtn">ADD TODO</button>
     </form>
