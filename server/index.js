@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const http = require("http").Server(app);
-const PORT = 4444;
+const PORT = 4000;
 
 const socketIO = require("socket.io")(http, {
   cors: {
@@ -67,7 +67,7 @@ socketIO.on("connection", (socket) => {
   socket.on("createTask", (data) => {
     const newTask = { id: fetchID(), title: data.task, comments: [] };
     tasks["pending"].items.push(newTask);
-    socket.emit("tasks", tasks);
+    socketIO.emit("tasks", tasks);
   });
 
   socket.on("taskDragged", (data) => {
@@ -84,7 +84,7 @@ socketIO.on("connection", (socket) => {
     );
     console.log("Source >>>", tasks[source.droppableId].items);
     console.log("Destination >>>", tasks[destination.droppableId].items);
-    socket.emit("tasks", tasks);
+    socketIO.emit("tasks", tasks);
     console.log("tasks emitted >>>", tasks);
   });
 
@@ -92,7 +92,7 @@ socketIO.on("connection", (socket) => {
     const taskItems = tasks[data.category].items;
     for (let i = 0; i < taskItems.length; i++) {
       if (taskItems[i].id === data.id) {
-        socket.emit("comments", taskItems[i].comments);
+        socketIO.emit("comments", taskItems[i].comments);
       }
     }
   });
@@ -105,7 +105,7 @@ socketIO.on("connection", (socket) => {
           text: data.comment,
           id: fetchID(),
         });
-        socket.emit("comments", taskItems[i].comments);
+        socketIO.emit("comments", taskItems[i].comments);
       }
     }
   });

@@ -7,14 +7,13 @@ const TasksContainer = ({ socket }) => {
 
   useEffect(() => {
     socket.on("tasks", (data) => {
-      console.log("Data fetched", data);
       setTasks(data);
     });
   }, [socket]);
 
   useEffect(() => {
     function fetchTasks() {
-      fetch("http://192.168.1.29:4444/api")
+      fetch("http://192.168.1.29:4000/api")
         .then((res) => res.json())
         .then((data) => setTasks(data));
     }
